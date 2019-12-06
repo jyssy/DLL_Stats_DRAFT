@@ -26,7 +26,7 @@ dataSet=set(dataList)
 # with open('init_code.csv', 'r') as init_file:
 # stat_reader = init_file.read().split('\n')
 
-team = dict(jal='Jesse Lambertson ', psm='Pat Sayre-McCoy ', mcd='Melanie Dial ', den='Daryl Nelson ', jrs='Julie Stauffer ', naa='Nissy ', dmd='Dora Davis ', ini='Initial_header')
+team = dict(jal='Jesse Lambertson ', psm='Pat Sayre-McCoy ', mcd='Melanie Dial ', den='Daryl Nelson ', jrs='Julie Stauffer ', naa='Nissy ', dmd='Dora Davis ', ini='Initial_header ')
 codes = dict(PMO=' Print Monograph Original ', PML=' Print Monograph LC copy ', PMC=' Print Monograph OCLC copy ', COD=' Code_header ',
                  PMR=' Print Monograph OCLC Revised ', PMB=' Print Monograph Rare Book cataloging ', PPC=' Print PCC Original ',
                  PCU=' Print PCC Upgrade ', PSO=' Print Serial Original ',
@@ -75,3 +75,6 @@ with open("stats_out.csv", 'w', newline='') as final:
     fileWriter = csv.writer(final, delimiter=',')
     for row in sortedlist:
         fileWriter.writerow(row)
+
+print('complete, yay!')
+

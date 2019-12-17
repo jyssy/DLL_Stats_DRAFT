@@ -1,19 +1,44 @@
 # Statistics for Cataloging/Metadata Department (run monthly)
-# Thank you Matt Zimmerman & Kim Kelmor
+# Thank you Matt Zimmerman, Kim Kelmor, and John Jung
 # Uses data from an OLE Report (item records and bib data)
 
-import sys
-import os
-import csv
-import operator
+import sys, os, csv, operator
 
-# replace the name with the actual csv file name or change the name to 'Cataloging_stats.csv'
+subject_area_counts = {}
+
+with open('Cataloging_Stats.csv', 'r') as call_stats:
+    report_reader = csv.reader(call_stats)
+
+    # skip headers
+    next(report_reader)
+
+    for row in report_reader:
+        call_num = row[4]
+
+        subject_area = call_num.split('.')[0].strip()
+        if subject_area not in subject_area_counts:
+            subject_area_counts[subject_area] = 0
+        subject_area_counts[subject_area] += 1
+
+    with open('CallNo_Count.csv', 'w') as call_stats_report:
+        report_writer = csv.writer(call_stats_report)
+
+        for subject_area, count in subject_area_counts.items():
+            report_writer.writerow([subject_area, count])
+
+        # RESORT the resulting spreadsheet (manually) so the call numbers are in alpha order.
+
+        # for s, c in subject_area_counts.items():
+        #     print('{},{}'.format(s, c))
+
+# Change the name of the actual csv to: 'Cataloging_stats.csv'
+# Replace the header: 'Item Note' with 'iniCOD.
 file_name = "Cataloging_Stats.csv"
 f = open(file_name, encoding='utf-8')
 csv_file = csv.reader(f)
-eighth_column = [] # empty list to store seventh column values
+eighth_column = [] # empty list to store eighth column values
 for line in csv_file:
-    eighth_column.append(line[6])
+    eighth_column.append(line[7])
 
 # removes empty lines, puts in required header file, strips out old header file
 dataList=[s for s in eighth_column if s.strip()]
@@ -31,7 +56,7 @@ codes = dict(PMO=' Print Monograph Original ', PML=' Print Monograph LC copy ', 
                  PMR=' Print Monograph OCLC Revised ', PMB=' Print Monograph Rare Book cataloging ', PPC=' Print PCC Original ',
                  PCU=' Print PCC Upgrade ', PSO=' Print Serial Original ',
                  PSL=' Print Serial LC copy ', PSC=' Print Serial OCLC copy ', PSR=' Print Serial OCLC Revised ',
-                 MWL=' Monograph WLAW ', WMO=' Web monograph Original ', WML=' Web Monograph LC Copy ',
+                 MWL=' Monograph WLAW ',MWR='Monograph WLAW Removed', WMO=' Web monograph Original ', WML=' Web Monograph LC Copy ',
                  WMC=' Web monograph OCLC copy ', WMR=' Revised web monograph ', WSO=' Web Serial Original ',
                  WSL=' Web Serial LC copy ', WSC=' Web Serial OCLC ', WSR=' Web Serial Revised ',
                  IOR=' Integrating Original Resource ', ICR=' Integrating OCLC Resource ', ILR=' Integrating LC Resource ', NNA=' New NACO Contribution ',
@@ -77,4 +102,3 @@ with open("stats_out.csv", 'w', newline='') as final:
         fileWriter.writerow(row)
 
 print('complete, yay!')
-

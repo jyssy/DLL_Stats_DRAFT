@@ -1,6 +1,7 @@
 # Statistics for Cataloging/Metadata Department (run monthly)
-# Thank you Matt Zimmerman, Kim Kelmor, and John Jung
+# Thank you MZ, KK, and JJ
 # Uses data from an OLE Report (item records and bib data)
+# Will probably move over to pandas soon
 
 import sys, os, csv, operator
 
